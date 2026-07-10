@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>STOCKMATE</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="brand" id="brand-home" role="button" tabindex="0">STOCKMATE</div>
+
+      <form class="search-bar" id="search-form" hidden>
+        <svg
+          class="search-icon"
+          viewBox="0 0 20 20"
+          fill="none"
+          aria-hidden="true"
+        >
+          <circle
+            cx="9"
+            cy="9"
+            r="6.5"
+            stroke="currentColor"
+            stroke-width="1.6"
+          />
+          <line
+            x1="13.8"
+            y1="13.8"
+            x2="18"
+            y2="18"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          />
+        </svg>
+        <input
+          id="search-input"
+          placeholder="종목명 검색 (코스피)"
+          autocomplete="off"
+        />
+        <div class="autocomplete-list" id="search-autocomplete" hidden></div>
+      </form>
+    </header>
+
+    <p class="search-error" id="search-error" hidden></p>
+
+    <section class="hero" id="hero">
+      <div class="hero-icon">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <circle
+            cx="9"
+            cy="9"
+            r="6.5"
+            stroke="currentColor"
+            stroke-width="1.6"
+          />
+          <line
+            x1="13.8"
+            y1="13.8"
+            x2="18"
+            y2="18"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          />
+        </svg>
+      </div>
+      <h1 class="hero-title">어떤 종목이 궁금하세요?</h1>
+      <p class="hero-subtitle">종목을 검색하면 주간 차트와 AI 애널리스트가 함께 열립니다</p>
+
+      <form class="hero-search-bar" id="hero-search-form">
+        <svg
+          class="search-icon"
+          viewBox="0 0 20 20"
+          fill="none"
+          aria-hidden="true"
+        >
+          <circle
+            cx="9"
+            cy="9"
+            r="6.5"
+            stroke="currentColor"
+            stroke-width="1.6"
+          />
+          <line
+            x1="13.8"
+            y1="13.8"
+            x2="18"
+            y2="18"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          />
+        </svg>
+        <input
+          id="hero-search-input"
+          placeholder="삼성전자, 000660, SK하이닉스..."
+          autocomplete="off"
+          autofocus
+        />
+        <div class="autocomplete-list" id="hero-search-autocomplete" hidden></div>
+      </form>
+
+      <div class="hero-chips" id="hero-chips">
+        <button type="button" class="hero-chip" data-company="삼성전자">삼성전자</button>
+        <button type="button" class="hero-chip" data-company="SK하이닉스">SK하이닉스</button>
+        <button type="button" class="hero-chip" data-company="NAVER">NAVER</button>
+        <button type="button" class="hero-chip" data-company="카카오">카카오</button>
+        <button type="button" class="hero-chip" data-company="현대차">현대차</button>
+        <button type="button" class="hero-chip" data-company="LG에너지솔루션">LG에너지솔루션</button>
+      </div>
+    </section>
+
+    <main class="dashboard" id="dashboard" hidden>
+      <section class="stock-card">
+        <div class="empty-state" id="empty-state">
+          <p>종목을 검색하면 시세와 차트가 여기에 표시됩니다.</p>
+        </div>
+
+        <div class="stock-content" id="stock-content" hidden>
+          <div class="stock-header">
+            <span class="stock-name" id="stock-name"></span>
+            <span class="stock-ticker" id="stock-ticker"></span>
+          </div>
+
+          <div class="price-row">
+            <span class="stock-price" id="stock-price"></span>
+            <span class="stock-change" id="stock-change"></span>
+          </div>
+
+          <div class="stat-row">
+            <div class="stat-box">
+              <span class="stat-label">고가</span>
+              <span class="stat-value" id="stat-high"></span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">저가</span>
+              <span class="stat-value" id="stat-low"></span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">52주최고</span>
+              <span class="stat-value" id="stat-52w"></span>
+            </div>
+          </div>
+
+          <div class="chart-wrapper">
+            <canvas id="main-chart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section class="chat-card">
+        <div class="chat-header">
+          <span class="avatar-dot"></span>
+          <span class="chat-title">AI 애널리스트</span>
+        </div>
+
+        <div class="log" id="log"></div>
+
+        <div class="suggestions" id="suggestions" hidden>
+          <button type="button" class="pill" data-question="재무제표 알려줘">
+            재무제표
+          </button>
+          <button type="button" class="pill" data-question="최근 뉴스 알려줘">
+            최근 뉴스
+          </button>
+          <button
+            type="button"
+            class="pill"
+            data-question="지금 시점에서 투자 의견 어때?"
+          >
+            목표주가
+          </button>
+        </div>
+
+        <form class="composer" id="composer">
+          <input
+            type="text"
+            id="chat-input"
+            placeholder="질문 입력..."
+            autocomplete="off"
+          />
+          <button type="submit" id="send-btn" aria-label="전송">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path
+                d="M10 15V5M10 5L5 10M10 5L15 10"
+                stroke="white"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </form>
+      </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+    <script src="/static/script.js"></script>
+  </body>
+</html>
